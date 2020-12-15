@@ -13,6 +13,7 @@ class MemorizeGame {
     this.randomNumbers = "";
     // set display text to empty string
     this.display.innerText = "";
+    this.message.innerText = "";
 
     // add event listener for every button
     this.numbers.forEach((number) => {
