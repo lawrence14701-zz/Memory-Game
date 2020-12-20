@@ -59,9 +59,10 @@ class MemorizeGame {
       const button = this.findNumber(randomNumber);
       //simulate a click
       button.style.background = "#808080 ";
-      await timer(1000);
+      await timer(500);
       //simulate a click
       button.style.background = "#d3d3d3 ";
+      await timer(500);
     }
   }
 
