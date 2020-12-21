@@ -1,21 +1,48 @@
-class MemorizeGame {
-  constructor(numbers, display, message) {
-    this.numbers = numbers;
+class Game {
+  constructor(display, numbers, message) {
     this.display = display;
+    this.numbers = numbers;
     this.message = message;
-
-    //human player and randomNumbers always gets reset when new game is created
+    this.huPlayer = "";
+    this.randomNumbers = "";
     this.reset();
   }
 
-  reset() {
-    this.huPlayer = "";
-    this.randomNumbers = "";
-    // set display text to empty string
-    this.display.innerText = "";
-    this.message.innerText = "";
+  generateNumbers() {
+    // get 4 random numbers between 0 -9
+    for (let i = 0; i < 4; i++) {
+      const randomNumber = Math.floor(Math.random() * 9);
+      this.randomNumbers += randomNumber;
+    }
+  }
 
-    // add event listener for every button
+  async randomizeClicks() {
+    for (let i = 0; i < this.randomNumbers.length; i++) {
+      const randomNumber = this.randomNumbers[i];
+      const button = this.findnumber(randomNumber);
+      const timer = (ms) => new Promise((res) => setTimeout(res, ms));
+      //simulate a click
+      button.style.background = "#808080";
+      await timer(500);
+      button.style.background = "#d3d3d3";
+      await timer(500);
+    }
+  }
+
+  findnumber(randomNumber) {
+    for (const number of this.numbers) {
+      if (number.textContent.includes(randomNumber)) {
+        return number;
+      }
+    }
+  }
+
+  reset() {
+    //reset the display to empty string
+    this.display.innerText = "";
+
+    //add event listener to number buttons
+
     this.numbers.forEach((number) => {
       number.addEventListener("click", () => {
         this.updateDisplay(number.innerText);
@@ -31,53 +58,17 @@ class MemorizeGame {
 
   checkWin() {
     if (this.huPlayer === this.randomNumbers) {
-      this.message.innerText = "Congrats You Win!";
-      //disable the buttons until the user starts again
-      this.disabledButtons();
+      this.message.innerText = "Congrats you win!";
+      this.disableButtons();
     }
 
     if (
       this.huPlayer.length === this.randomNumbers.length &&
       this.huPlayer != this.randomNumbers
     ) {
-      this.message.innerText = `You lose, real answer was ${this.randomNumbers}!`;
-      this.disabledButtons();
+      this.message.innerText = `You lost the right answer was ${this.randomNumbers}`;
+      this.disableButtons();
     }
-  }
-
-  generateNumbers() {
-    // get 4 random numbers between 0 - 9
-    for (let i = 0; i < 4; i++) {
-      const randomNumber = Math.floor(Math.random() * 9);
-      this.randomNumbers += randomNumber;
-    }
-  }
-  async randomizeClicks() {
-    for (let i = 0; i < this.randomNumbers.length; i++) {
-      const randomNumber = this.randomNumbers[i];
-      const timer = (ms) => new Promise((res) => setTimeout(res, ms));
-      const button = this.findNumber(randomNumber);
-      //simulate a click
-      button.style.background = "#808080 ";
-      await timer(500);
-      //simulate a click
-      button.style.background = "#d3d3d3 ";
-      await timer(500);
-    }
-  }
-
-  findNumber(randomNumber) {
-    for (const number of this.numbers) {
-      if (number.textContent.includes(randomNumber)) {
-        return number;
-      }
-    }
-  }
-
-  disabledButtons() {
-    this.numbers.forEach((number) => {
-      number.disabled = true;
-    });
   }
 
   enableButtons() {
@@ -85,30 +76,27 @@ class MemorizeGame {
       number.disabled = false;
     });
   }
+  disableButtons() {
+    this.numbers.forEach((number) => {
+      number.disabled = true;
+    });
+  }
 }
 
-// constant variables
+// const variables
 
-const numbers = document.querySelectorAll("[data-number]");
 const startButton = document.getElementById("start");
 const display = document.getElementById("display");
 const message = document.getElementById("message");
-
-let isStarted;
+const numbers = document.querySelectorAll("[data-number]");
 
 const start = async () => {
-  // prevent user from starting a new game when the game is in motion
   startButton.disabled = true;
-  //start a new instance of the game, pass in the variables the game depends on
-  const game = new MemorizeGame(numbers, display, message);
-
-  //generate a random set of numbers the user needs to memorize and match
+  const game = new Game(display, numbers, message);
   game.generateNumbers();
-  console.log(game.randomNumbers);
-  // we use async await becuase we want to wait till the computer finishes processing this line before executing the next
   await game.randomizeClicks();
-  game.enableButtons();
   startButton.disabled = false;
+  game.enableButtons();
 };
 
 startButton.addEventListener("click", () => {

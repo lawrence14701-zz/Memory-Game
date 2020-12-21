@@ -1,17 +1,10 @@
-* {
-  box-sizing: border-box;
-  font-family: sans-serif;
-  font-weight: normal;
-}
-
 body {
   padding: 0;
   margin: 0;
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
-  height: 100%;
+  align-items: center;
+  justify-content: center;
 }
 
 #title {
@@ -21,10 +14,10 @@ body {
 button {
   cursor: pointer;
   font-size: 2rem;
-  border: 1px solid white;
-  border-radius: 9999px;
   outline: none;
   background-color: #d3d3d3;
+  border: 1px solid white;
+  border-radius: 9999px;
 }
 
 button:hover {
@@ -33,26 +26,30 @@ button:hover {
 
 #button-grid {
   display: grid;
-  gap: 8px;
   grid-template-columns: repeat(3, 100px);
   grid-template-rows: 80px repeat(4, 100px);
-}
-
-.hide {
-  background: white;
-  cursor: initial;
+  gap: 8px;
 }
 
 #display {
-  grid-column: 1 / -1;
+  grid-column: 1/-1;
   background-color: rgba(0, 0, 0, 0.75);
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   padding: 10px;
   border-radius: 50px;
   color: white;
   font-size: 30px;
+}
+
+.hide {
+  background-color: white;
+  cursor: initial;
+}
+
+.hide:hover {
+  background-color: white;
 }
 
 #start {
@@ -61,7 +58,6 @@ button:hover {
   font-size: 30px;
   font-weight: bold;
   color: white;
-  border-radius: 15px;
   width: 300px;
   height: 55px;
 }
@@ -74,8 +70,4 @@ button:hover {
   border: 1px solid #999999;
   background-color: #cccccc;
   color: #666666;
-}
-
-#start:focus {
-  outline: none;
 }
